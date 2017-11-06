@@ -1,0 +1,160 @@
+﻿<div id="pizzaOrderView">
+    <div class="row pageContent">
+        <div class="col-lg-8">
+            <h3 id="category-title">Меню</h3>
+            <img src="../assets/images/pizzas.PNG" alt="Alternate Text" />
+            <br />
+        </div>
+
+        <div class="col-lg-4">
+            <br>
+            <h3 id="category-title"> </h3>
+            <div id="related">
+                <div id="related-cart">
+
+                    <div class="basket-header">
+                        <h4>Ваше замовлення: <pr class="cart-qty" data-bind="text: totalPrice"></pr> грн</h4>
+                    </div>
+
+                    <div id="related-cart-open">
+                        <div class="content">
+                            <div class="products">
+                                <div id="serverloadedMiniBasketItems" class="productSel loaded selected miniBasketItems" data-bind="foreach: selectedProducts()">
+
+                                    <div class="minibasketinner" data-toggle="modal" data-target="#ingredientModal" data-bind="click: $parent.ingredientsSetCount">
+                                        <div class="col-md-9">
+                                            <b class="title" data-bind="text: name"></b>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="product-buttons2 product-qty-wrapper">
+                                                <a class="product-remove left" data-bind="click: $parent.deletePizzaItem"><span>-</span></a>
+                                                <div class="product-qty left" data-bind="text: countOfPizzas()"> </div>
+                                                <a class="product-add left" data-bind="click: $parent.addPizzaItem"><span>+</span></a>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <p class="title" data-bind="text: ko.utils.arrayMap($data.ingredients(), function(x){return (x.count() > 0)? (' ' + x.name() + ((x.count() > 1) ? '(' + x.count() + ')' : '')): ''})"></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h4 class="pizzaModPrice" data-bind="text: (Number(price()) * Number(countOfPizzas()))"></h4>
+                                        </div>
+
+
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="ingredientModal" role="dialog">
+                                        <div class="modal-dialog modal-lg product-full-modal">
+                                            <div class="modal-content">
+                                                <div class="modal-header modal-ingredients-header">
+                                                    <h4 class="modal-title ingredient-modal-title">Оберіть додаткові інгредієнти</h4>
+                                                </div>
+
+                                                <div class="modal-body modal-ingredients-body">
+
+                                                    <div class="row ingredients-header">
+                                                        <div class="col-md-3">
+                                                            <b>Інгредієнт</b>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <b>Маса</b>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <b>Ціна</b>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <b>К-сть</b>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <b>Сумарно</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="products-elements" data-bind="foreach: $parent.allIngredientsForPizza().ingredients">
+                                                        <div class="product" data-bind="style: {background: (initCount >= 1) ? 'antiquewhite' : 'none'}">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <img class="product-image" data-bind="attr: {'src': imgUrl}">
+                                                                    <div class="product-title" data-bind="text: name()"></div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <p class="vertical-center" data-bind="text: weight"></p>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="vertical-center" data-bind="text: price"></div>
+                                                                </div>
+                                                                <div class="col-md-2 product-quantity">
+                                                                    <input type="number" class="vertical-center" data-bind="value: count" min="0" max="3">
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="vertical-center" data-bind="text: (count() > initCount) ? Number(count() - initCount) * Number(price()) : Number(0)"></div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="modal-footer">
+                                                        <div class="col-md-5">
+                                                            <div class="totals">
+                                                                <div class="row">
+                                                                    <div class="col-md-7">
+                                                                        <label class="total-right">Ціна</label>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                        <div class="totals-value" id="cart-total" data-bind="text: $parent.calculatePizzaPriceWithAdditionalIngredients()"> </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <button class="checkout" data-bind="click: $parent.addAdditionalIngredients">Додати</button>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <button class="close-btn" data-dismiss="modal">Скасувати</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <a data-bind="click: order" class="go-checkout-btn">Замовити</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+            </div>
+
+
+        </div>
+
+
+
+        <div class="row pizzas" data-bind="foreach: pizzas">
+            <div class="col-md-3 col-lg-3 products-list">
+                <div class="product-gallery">
+                    <div class="hovereffect">
+                        <img class="img-responsive" data-bind="attr: { 'src': imgUrl }" alt="Alternate Text" />
+                        <div class="overlay">
+                            <h5>Інгредієнти</h5>
+                            <h6 data-bind="text: ko.utils.arrayMap($data.ingredients(), function(v){return ' ' + v.name();})"></h6>
+                        </div>
+                    </div>
+
+                    <p class="product-name" data-bind="text: name"></p>
+
+                    <div class="product-price secondprice ">
+                        <el data-bind="text: price"></el> грн
+                        <a class="product-buy" data-bind="attr:{'id': $index()}, click: $parent.addToCard" title="Add to сart">В корзину</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

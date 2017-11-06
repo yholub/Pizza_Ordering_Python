@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+    <link rel="stylesheet" href="../../css/normalize.css">
+    <link rel="stylesheet" href="../../css/userInfoPage.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="../../css/main.css" media="screen" type="text/css">
+    <link href="../css/Site.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/style-portfolio.css">
+    <link rel="stylesheet" href="../../css/picto-foundry-food.css" />
+    <link rel="stylesheet" href="../../css/jquery-ui.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-1.ico" type="image/x-icon">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../Home.html">Came &amp; ate</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav main-nav  clear navbar-right ">
+                        <li><a class="navactive color_animation" href="UserInfoPage.html" id="userList">PROFILE <span class="toHide" style="display:none; color: white" id="userNamePut"></span></a></li>
+                        <li><a class="color_animation" href="PizzaOrdering.html">ORDER PIZZA</a></li>
+                        <li class=" toHide" style="display:none" id="logout"><a class="color_animation" href="">LOG OUT</a> </li>
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="col-md-offset-4 col-md-4">
+        <div class="panel" id="bonuses">
+            <p>Count of bonuses: 345</p>
+
+            <!-- Begin # DIV Form -->
+            <div id="div-forms col-md-offset-1 col-md-10">
+                <form role="form" class="form-inline go-right" id="profileForm">
+                    <h2>Profile</h2>
+                    <br>
+                    <div class="form-group">
+                        <input id="Firstname" name="Firstname" type="text" class="form-control" required>
+                        <label for="Firstname">First Name <span class="glyphicon glyphicon-user"/></label>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <input id="Lastname" name="Lastname" type="text" class="form-control" required>
+                        <label for="Lastname">Last Name <span class="glyphicon glyphicon-user"/> </label>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <input id="phone" name="phone" type="tel" class="form-control" required>
+                        <label for="fphone">Phone<br><span class="glyphicon glyphicon-phone"/></label>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <input id="Email1" name="phone" class="form-control" required/>
+                        <label for="Email1">Email<br><span class="glyphicon glyphicon-envelope"/></label>
+                    </div>
+                    <br><br>
+                    <button id="saveProfile">
+                        Save
+                    </button>
+                    <br>
+                    <br>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End # DIV Form -->
+
+
+    <script type="text/javascript" src="../../js/libs/jquery-1.10.2.js"> </script>
+    <script type="text/javascript" src="../../js/libs/bootstrap.js"></script>
+    <script type="text/javascript" src="../../js/userInfoPage.js"></script>
+    <script src="../../../Scripts/jquery.cookie.js"></script>
+    <script src="../../../Scripts/site.js"></script>
+</body>
+</html>

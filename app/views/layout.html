@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/main.css" media="screen" type="text/css">
+    <link href="../css/Site.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Playball' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link href="../css/toggleInput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style-portfolio.css">
+    <link rel="stylesheet" href="../css/picto-foundry-food.css" />
+    <link href="../css/pizzaOrdering.css" rel="stylesheet" />
+    <link href="../css/payment.css" rel="stylesheet" />
+    <!--<link href="../css/userInfoPage.css" rel="stylesheet" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon-1.ico" type="image/x-icon">
+    <link href="../css/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />
+    <link href="../css/jquery.ui.timepicker.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="row">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Came &amp; ate</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav main-nav  clear navbar-right ">
+                        <li><a class="router-href navactive color_animation" href="#/" id="userList">WELCOME <span class="toHide" style="display:none; color: white" id="userNamePut"></span></a></li>
+                        <li><a class="router-href color_animation" href="#/order">ORDER PIZZA</a></li>
+                        <li class="toShow"><a href="" class="color_animation" data-toggle="modal" data-target="#login-modal">LOG IN</a></li>
+                        <li class=" toHide" style="display:none" id="logout" hidden><a class="color_animation" href="#/">Logout</a> </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+	<content id="main">
+	</content>
+    <footer class="sub_footer">
+        <div class="container">
+            <div class="col-md-offset-4 col-md-4"><p class="sub-footer-text text-center">&copy; Came &amp; Eat 2017</p></div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" align="center">
+                    <img class="img-circle" id="img_logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR64t1QgV-4Kbxy6bj8qgRvtedGa8uRkPpFGJ0xf5j98kJEtR5MJA">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+                    <!-- Begin # Login Form -->
+                    <form id="login-form">
+                        <div class="modal-body">
+                            <div id="div-login-msg">
+                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-login-msg">Type your username and password.</span>
+                            </div>
+                            <input id="login_username" class="form-control" type="text" placeholder="Username" required>
+                            <input id="login_password" class="form-control" type="password" placeholder="Password" required>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Remember me
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                            </div>
+                            <div>
+                                <button id="login_lost_btn" type="button" class="btn btn-link">Lost Password?</button>
+                                <button id="login_register_btn" type="button" class="btn btn-link">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End # Login Form -->
+                    <!-- Begin | Lost Password Form -->
+                    <form id="lost-form" style="display: none;">
+                        <div class="modal-body">
+                            <div id="div-lost-msg">
+                                <div id="icon-lost-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-lost-msg">Type your e-mail.</span>
+                            </div>
+                            <input id="lost_email" class="form-control" type="text" placeholder="E-Mail (type ERROR for error effect)" required>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>
+                            </div>
+                            <div>
+                                <button id="lost_login_btn" type="button" class="btn btn-link">Log In</button>
+                                <button id="lost_register_btn" type="button" class="btn btn-link">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End | Lost Password Form -->
+                    <!-- Begin | Register Form -->
+                    <form id="register-form" style="display: none;">
+                        <div class="modal-body">
+                            <div id="div-register-msg">
+                                <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-register-msg">Register an account.</span>
+                            </div>
+                            <input id="register_username" class="form-control" type="text" placeholder="Username" required>
+                            <input id="register_email" class="form-control" type="text" placeholder="E-Mail" required>
+                            <input id="register_password" class="form-control" type="password" placeholder="Password" required>
+                            <input id="register_confirm_password" class="form-control" type="password" placeholder="Confirm password" required>
+                        </div>
+                        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                            </div>
+                            <div>
+                                <button id="register_login_btn" type="button" class="btn btn-link">Log In</button>
+                                <button id="register_lost_btn" type="button" class="btn btn-link">Lost Password?</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- End | Register Form -->
+                </div>
+                <!-- End # DIV Form -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/libs/jquery-1.10.2.js"> </script>
+    <script src="../js/libs/jquery.ui.core.min.js"></script>
+    <script src="../js/libs/bootstrap.js"></script>
+    <script src="../js/libs/knockout-3.4.2.js"></script>
+    <script src="../js/libs/jquery.ui.timepicker.js"></script>
+    <script src="../js/libs/sammy-0.7.6.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../../Scripts/jquery.cookie.js"></script>
+    <script src="../../Scripts/site.js"></script>
+    <script src="../js/user/pizzaOrdering.js"></script>
+
+    <script src="https://js.stripe.com/v2/"></script>
+    <script href="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/3.0.0/jquery.payment.js"></script>
+    <script href="https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.3/knockout.validation.js"></script>
+    <script src="../js/user/payment.js"></script>
+
+    <script src="../js/user/userInfoPage.js"></script>
+    <script src="../js/user/timeLocationPicker.js"></script>
+    <script src="../js/user/user.router.js"></script>
+</body>
+</html>

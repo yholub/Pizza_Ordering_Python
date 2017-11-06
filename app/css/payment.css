@@ -1,0 +1,27 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+#paymentView .jumbotron-flat {
+    background-color: #4DB8FF;
+    height: 100%;
+    border: 1px solid #4DB8FF;
+    background: white;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+}
+
+#paymentView .paymentAmt {
+    font-size: 80px;
+}
+
+#paymentView .centered {
+    text-align: center;
+}
+
+#paymentView .title {
+    padding-top: 15px;
+}
+
+#paymentView .title h1{
+    width: auto;
+}
