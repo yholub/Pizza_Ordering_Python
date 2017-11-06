@@ -7,7 +7,7 @@
     this.get('#/order', function (context) {
         updateHref();
         this
-           .partial('user/pizzaOrdering.html', { cache: false })
+           .partial('/../../../templates/user/pizzaOrdering.html', { cache: false })
            .then(function () {
               
                pizzaOrdering.init();
@@ -48,7 +48,8 @@
 
     this.get('#/', function (context) {
         updateHref();
-        this.partial('Home.html').then(function () {
+        console.log("HIIIIIIIIIIIIIIIIIIIII");
+        this.partial('templates/home.html').then(function () {
             //scroll for main page probably not needed know
             //$(document).ready(function () {
             //    $(document).on("scroll", onScroll);
