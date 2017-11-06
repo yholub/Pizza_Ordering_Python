@@ -59,6 +59,15 @@
       }.bind(this));
     };
 
+    $.fn.reset = function () {
+        if (!$.cal) {
+            $.cal = new Calendar(setings);
+        }
+
+        $.cal.reset();
+       
+    }
+
     /**
      * Calendar Event class.
      * @param ev
@@ -266,6 +275,12 @@
       this.ids = [];
       this.matrix = [];
       this.element = element;
+
+      this.reset = function () {
+          this.matrix = [];
+          this.ids = [];
+          cal_events = [];
+      }
 
       /**
        * Adds an Event to Calendar stage.
@@ -509,4 +524,5 @@
       this.init();
     };
 
+   
 })(jQuery);

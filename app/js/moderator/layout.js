@@ -175,14 +175,22 @@ $.sammy("#main", function () {
                         this.reject = function (el) {
                             $.post('/api/order/reject/' + el.OrderId);
                             $('.event[data-order-id="' + el.OrderId + '"]').remove();
-                            self.orders.remove(el);
+                            self.orders.remove(function (ev) {
+                                return el.OrderId == ev.OrderId;
+                            });
+
+                            refillCalendar(self.orders());
                         }
                         this.rejectSelected = function () {
                             var el = self.selected();
                             $.post('/api/order/reject/' + el.OrderId);
                             $('.event[data-order-id="' + el.OrderId + '"]').remove();
-                            self.orders.remove(el);
+                            self.orders.remove(function (ev) {
+                                return el.OrderId == ev.OrderId;
+                            });
+
                             self.selected(null);
+                            refillCalendar(self.orders());
                         }
                     }
 
@@ -191,23 +199,7 @@ $.sammy("#main", function () {
                     window.task = setInterval(function () {
                         $.get('/api/Order/GetNew', function (data) {
                             if (window.task) {
-                                var notYet = data.filter(function (el) {
-                                    if (model.dict[el.Id]) {
-                                        return false;
-                                    } else {
-                                        return true;
-                                    }
-                                });
-                                var list = eventsMap(notYet);
-                                if (notYet.length > 0) {
-                                    $('#calendar').addEvents(list);
-                                    notYet.forEach(function (el) {
-                                        model.dict[el.Id] = el;
-                                        el.State = ko.observable(el.State);
-                                        model.orders.push(el);
-                                    });
-                                }
-                                
+                                fillCalendarWithNewData(data, model);
                             }
                         });
                     }, 2000);
@@ -240,8 +232,8 @@ function eventsMap(data) {
     return $.map(data, function (d) {
         return {
             event: {
-                dateStart: new Date(now.getYear(), /* month */ now.getMonth(),  /* day */ now.getDay(), /* hour */ d.StHour, /* minute */ d.StMinute, 0, 0),
-                dateEnd: new Date(now.getYear(), /* month */ now.getMonth(),  /* day */ now.getDay(), /* hour */ d.EndHour, /* minute */ d.EndMinute, 0, 0),
+                dateStart: new Date(now.getYear(), /* month */ now.getMonth(),  /* day */ now.getDate(), /* hour */ d.StHour, /* minute */ d.StMinute, 0, 0),
+                dateEnd: new Date(now.getYear(), /* month */ now.getMonth(),  /* day */ now.getDate(), /* hour */ d.EndHour, /* minute */ d.EndMinute, 0, 0),
                 title: d.Name,
                 state: d.State,
                 description: "Price: " + d.Price + " Start: " + d.StartStr + " End: " + d.EndStr,
@@ -252,6 +244,34 @@ function eventsMap(data) {
     });
 }
 
+function fillCalendarWithNewData(data, model) {
+    var notYet = data.filter(function (el) {
+        if (model.dict[el.Id]) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+    var list = eventsMap(notYet);
+    if (notYet.length > 0) {
+        $('#calendar').addEvents(list);
+        notYet.forEach(function (el) {
+            model.dict[el.Id] = el;
+            el.State = ko.observable(el.State);
+            model.orders.push(el);
+        });
+    }
+}
+
+function refillCalendar(data) {
+    $calendar = $("#calendar");
+    $calendar.reset();
+    $calendar.find(".event").remove();
+    var list = eventsMap(data);
+    if (list.length > 0) {
+        $calendar.addEvents(list);
+    }
+}
 function isBound(id) {
     if (document.getElementById(id) != null)
         return !!ko.dataFor(document.getElementById(id));

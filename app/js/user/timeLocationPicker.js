@@ -15,12 +15,12 @@
 
   
     function init(items) {
-        var locInfo = $.get("/api/pizza")
-        var timeInfo = $.get("/api/order/gettime", { qty: items.length });
+        var locInfo = $.post("/api/pizza", items)
+        var timeInfo = $.post("/api/order/gettime", items);
         $.when(locInfo, timeInfo)
             .then(function (locs, time) {
                 lastData =  locs[0];
-                model = new TimeLocViewModel(locs[0], time[0]);
+                model = new TimeLocViewModel(locs[0], time[0], items);
                 $("#gmap").on("change", "select", function () {
                     var val = parseInt($(this).val());
                     if (val > 0) {

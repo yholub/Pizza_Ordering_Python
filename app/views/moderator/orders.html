@@ -44,7 +44,7 @@
             </div>
 
         </div>
-        <div data-bind="css : { newOrdersDefaultContainer: !showSelected(), newOrdersSmallerContainer: showSelected()}" >
+        <div data-bind="css : { newOrdersDefaultContainer: !selected() || !showSelected(), newOrdersSmallerContainer: showSelected() && selected()}" >
             <hr />
             <h3> Нові замовлення</h3>
             <div data-bind="foreach: orders">
