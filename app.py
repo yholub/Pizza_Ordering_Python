@@ -14,10 +14,6 @@ def main():
         fixPizzas.append(instance)
     return render_template('layout.html')
 
-@app.route("/home")
-def home():
-    return render_template('home.html')
-
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')

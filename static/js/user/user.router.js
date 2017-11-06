@@ -7,7 +7,7 @@
     this.get('#/order', function (context) {
         updateHref();
         this
-           .partial('/../../../templates/user/pizzaOrdering.html', { cache: false })
+           .partial('/views/user/pizzaOrdering.html', { cache: false })
            .then(function () {
               
                pizzaOrdering.init();
@@ -17,7 +17,7 @@
 
     this.get('#/time', function () {
         this
-             .partial('user/timeAndLocation.html', { cache: false })
+             .partial('/views/user/timeAndLocation.html', { cache: false })
              .then(function () {
                  //Pass items
                  timeAndLoc.init(window.cacheOrders);
@@ -29,7 +29,7 @@
         $("a.router-href.navactive").removeClass("navactive");
         $('a.router-href[href="#/uinfo"]').addClass("navactive");
         this
-            .partial('user/payment.html')
+            .partial('/views/user/payment.html')
             .then(function () {
                 payment.init();
             });
@@ -48,8 +48,7 @@
 
     this.get('#/', function (context) {
         updateHref();
-        console.log("HIIIIIIIIIIIIIIIIIIIII");
-        this.partial('templates/home.html').then(function () {
+        this.partial('/views/home.html').then(function () {
             //scroll for main page probably not needed know
             //$(document).ready(function () {
             //    $(document).on("scroll", onScroll);
