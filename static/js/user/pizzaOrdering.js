@@ -10,13 +10,15 @@
     function getPizzas() {
         
         var promise = 
-            $.get("../../../api/pizzas/fix")
+            $.get("/api/pizzas/fix")
             .then(function(data) {
+                var pizzaData = JSON.parse(data);
+                console.log(pizzaData);
                 var pizzasArr = [];
-                for (var i = 0; i < data.length; i++) {
-                    var pizza = data[i];
+                for (var i = 0; i < pizzaData.length; i++) {
+                    var pizza = pizzaData[i];
                     var ingredients = [];
-                    for (var j = 0; j < pizza.Ingredients.length; j++) {
+                    for (var j = 0; j < pizza["Ingredients"].length; j++) {
                         ingredients.push({ name: ko.observable(pizza.Ingredients[j].Name), count: ko.observable(1), id: pizza.Ingredients[j].IngredientId, price: pizza.Ingredients[j].Price, initCount: 1 });
                     }
                     console.log(ingredients);
@@ -34,11 +36,12 @@
     function getIngredients() {
 
         var promise =
-            $.get("../../../api/ingredients")
+            $.get("/api/ingredients")
             .then(function (data) {
                 var ingredientsArr = [];
-                for (var i = 0; i < data.length; i++) {
-                    var ingredient = data[i];
+                var ingredientsData = JSON.parse(data);
+                for (var i = 0; i < ingredientsData.length; i++) {
+                    var ingredient = ingredientsData[i];
                     ingredientsArr.push({ id: ingredient.Id, imgUrl: "../assets/images/" + ingredient.Name + ".png", name: ko.observable(ingredient.Name), price: ko.observable(ingredient.Price), weight: ingredient.Weight, count: ko.observable(0), totalPrice: ko.observable(ingredient.Price), initCount: 0 });
                 }
 

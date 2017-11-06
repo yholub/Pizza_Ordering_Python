@@ -1,17 +1,16 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, Blueprint, render_template, json, request
 
 app = Flask(__name__, static_url_path='')
 import sqlalchemy
 from sqlalchemy import create_engine
 from models import *
+from pizzaOrdering import pizzaOrdering
 
 models = __import__("models")
+app.register_blueprint(pizzaOrdering)
 
 @app.route("/")
 def main():
-    fixPizzas = []
-    for instance in models.session.query(FixPizza).order_by(FixPizza.Id):
-        fixPizzas.append(instance)
     return render_template('layout.html')
 
 @app.route('/showSignUp')
