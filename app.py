@@ -17,9 +17,27 @@ def main():
 def showSignUp():
     return render_template('signup.html')
 
-@app.route('/signUp',methods=['POST'])
-def signUp():
-    return json.dumps(models.session.query(FixPizza).order_by(FixPizza.Id))
+@app.route('/api/Account/Login',methods=['POST'])
+def login():
+    model = request.form
+    print(model)
+    if(model['userName'][0:3] == 'bad') :
+        return "bad request", 400
+    if(model['userName'][0:3] == 'mod') :
+        return jsonify({
+            'status' : "success",
+            'redirect_url' : "views/moderator/ModeratorLayout.html#/" 
+        })
+    
+    return jsonify({
+            'status' : "success"
+        })
+
+@app.route('/api/Account/Logout',methods=['POST'])
+def logout():
+    return jsonify({
+            'status' : "success"
+        })
  
     # read the posted values from the UI
     #_name = request.form['inputName']
