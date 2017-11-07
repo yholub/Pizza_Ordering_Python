@@ -224,6 +224,8 @@ url = 'mssql+pyodbc://(localdb)\\v11.0/Pizza_Ordering?driver=SQL+Server+Native+C
 print(url)
 engine = create_engine(url)
 engine.connect()
+
 Session = sessionmaker(bind=engine)
 session = Session()
-
+def getSession() :
+    return Session()

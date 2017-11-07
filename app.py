@@ -53,15 +53,54 @@ def logout():
 
 #Will move later
 @app.route('/api/Order/GetCurrent', methods=['GET'])
-def GetCurrent():
-    id = session.query(PizzaHouse).filter(PizzaHouse.ModeratorId == 1).first().Id
-    query = models.session.query(OrderItem).filter(OrderItem.Order.has(PizzaHouseId = id)).filter(sqlalchemy.not_(OrderItem.Order.has(Status = 4)))
-    res = [GetOrderViewModel(x)  for x in query]
+def getCurrent():
+    sessionlocal = getSession()
+    id = sessionlocal.query(PizzaHouse).filter(PizzaHouse.ModeratorId == 1).first().Id
+    queryModified = sessionlocal\
+        .query(OrderItem)\
+        .filter(OrderItem.Order.has(PizzaHouseId = id))\
+        .filter(sqlalchemy.not_(OrderItem.Order.has(Status = 4)))\
+        .filter(OrderItem.IsModified == True)
+    fixedQuery = sessionlocal\
+        .query(OrderItem, FixPizza)\
+        .filter(OrderItem.PizzaId == FixPizza.Id)\
+        .filter(OrderItem.Order.has(PizzaHouseId = id))\
+        .filter(sqlalchemy.not_(OrderItem.Order.has(Status = 4)))\
+        .filter(OrderItem.IsModified == False)
+   
+    fixed = [GetOrderViewModel(item, pizza) for item, pizza in fixedQuery]
+    modified = [GetOrderViewModel(x) for x in  queryModified ]
+    res = fixed + modified
+    sessionlocal.close()
+    return jsonify(res)
+
+@app.route('/api/Order/GetNew', methods=['GET'])
+def getNew():
+    sessionlocal = getSession()
+    id = sessionlocal.query(PizzaHouse).filter(PizzaHouse.ModeratorId == 1).first().Id
+    queryModified = sessionlocal\
+        .query(OrderItem)\
+        .filter(OrderItem.Order.has(PizzaHouseId = id))\
+        .filter(OrderItem.Order.has(Status = 0))\
+        .filter(OrderItem.IsModified == True)
+    fixedQuery = sessionlocal\
+        .query(OrderItem, FixPizza)\
+        .filter(OrderItem.PizzaId == FixPizza.Id)\
+        .filter(OrderItem.Order.has(PizzaHouseId = id))\
+        .filter(OrderItem.Order.has(Status = 0))\
+        .filter(OrderItem.IsModified == False)
+   
+    fixed = [GetOrderViewModel(item, pizza) for item, pizza in fixedQuery]
+    modified = [GetOrderViewModel(x) for x in  queryModified ]
+    res = fixed + modified
+    sessionlocal.close()
     return jsonify(res)
 
 @app.route('/api/settings', methods=['GET'])
 def GetSettings():
-    house = session.query(PizzaHouse).filter(PizzaHouse.ModeratorId == 1).first()
+    sessionlocal = getSession()
+    house = sessionlocal.query(PizzaHouse).filter(PizzaHouse.ModeratorId == 1).first()
+    sessionlocal.close()
     return jsonify(GetSettingsModel(house))
 
 @app.route('/api/order/accept/<id>', methods=['POST'])
@@ -88,7 +127,7 @@ def GetSettingsModel(item):
     }
     return res
 
-def GetOrderViewModel(item):
+def GetOrderViewModel(item, pizza=None):
     res = {}
     res['Id'] = item.Id
     res['State'] = item.Order.Status
@@ -96,13 +135,16 @@ def GetOrderViewModel(item):
     res['End'] = item.EndTime
     res['OrderId'] = item.OrderId
     res['Price'] = int(item.Price)
-    res['Name'] = "Caesar"
     res['StartStr'] = item.StartTime.strftime("%Y-%m-%d")
     res['EndStr'] = item.EndTime.strftime("%Y-%m-%d")
     res['StHour'] = item.StartTime.hour
     res['StMinute'] = item.StartTime.minute
     res['EndHour'] = item.EndTime.hour
     res['EndMinute'] = item.EndTime.minute
+    if pizza is None:
+        res['Name'] = "Custom"
+    else:
+        res['Name'] = pizza.Name
     return res
 
 if __name__ == "__main__":
