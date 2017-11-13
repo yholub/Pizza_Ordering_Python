@@ -12,9 +12,7 @@ models = __import__("models")
 
 @pizzaOrdering.route("/api/pizzas/fix")
 def getFixPizzas():
-    print("WEEEEEEEEEEEEEEE")
     fixPizzas = []
-    print("22222")
     for pizza in models.session.query(FixPizza).order_by(FixPizza.Id):
         ingredients = []
         for ingredientItem in models.session.query(IngredientItem).filter(IngredientItem.FixPizza_Id == pizza.Id):

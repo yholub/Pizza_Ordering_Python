@@ -16,7 +16,7 @@ def main():
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')
-
+'''
 @app.route('/api/Account/Login',methods=['POST'])
 def login():
     model = request.form
@@ -146,7 +146,7 @@ def GetOrderViewModel(item, pizza=None):
     else:
         res['Name'] = pizza.Name
     return res
-
+'''
 if __name__ == "__main__":
     app.run()
 

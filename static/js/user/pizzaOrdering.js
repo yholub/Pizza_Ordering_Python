@@ -1,4 +1,4 @@
-﻿var pizzaOrdering = (function ($) {
+var pizzaOrdering = (function ($) {
     return {
         init: init,
         getPizzas: getPizzas,
@@ -13,7 +13,6 @@
             $.get("/api/pizzas/fix")
             .then(function(data) {
                 var pizzaData = JSON.parse(data);
-                console.log(pizzaData);
                 var pizzasArr = [];
                 for (var i = 0; i < pizzaData.length; i++) {
                     var pizza = pizzaData[i];
@@ -21,7 +20,7 @@
                     for (var j = 0; j < pizza["Ingredients"].length; j++) {
                         ingredients.push({ name: ko.observable(pizza.Ingredients[j].Name), count: ko.observable(1), id: pizza.Ingredients[j].IngredientId, price: pizza.Ingredients[j].Price, initCount: 1 });
                     }
-                    console.log(ingredients);
+
                     pizzasArr.push({ id: pizza.Id, imgUrl: "../assets/images/" + pizza.Name + ".jpg", name: pizza.Name, price: pizza.Price, ingredients: ko.observableArray(ingredients) });
                 }
 
@@ -58,7 +57,7 @@
         self.pizzas = pizzas;
         self.allIngredients = ko.observableArray(ingredientsArr);
         self.selectedProducts = ko.observableArray([]);
-
+        self.searchIngredient = ko.observable('');
 
         self.order = function () {
             window.cacheOrders = { orderItems: $.map(self.selectedProducts(), function (el) { return { id: el.id, name: el.name, count: el.countOfPizzas(), ingredients: $.map(el.ingredients(), function (ing) { return { id: ing.id, count: ing.count() } }) } }) };
@@ -132,7 +131,7 @@
                     ingredient.count(0);
                 }
             });
-
+            console.log("111111111");
             self.allIngredientsForPizza({ pizza: ko.observable(selectedPizza), ingredients: ko.observableArray(ingredientWithCount) });
         };
         
@@ -144,7 +143,6 @@
             var ingredientsPrice = 0;
 
             ingredientsPrice += self.allIngredientsForPizza().pizza().ingredients().reduce(function (y, x) {
-                console.log(x);
                 if(x.initCount >= 1) {
                     return (x.count() <= x.initCount) ? y : (x.count() - x.initCount) * x.price;
                 }
@@ -153,7 +151,6 @@
             }, 0);
 
             ingredientsPrice += self.allIngredientsForPizza().ingredients().reduce(function (y, x) {
-                console.log(x);
                 if (x.initCount >= 1) {
                     return (x.count() <= x.initCount) ? y : (x.count() - x.initCount) * x.price();
                 }
@@ -185,10 +182,27 @@
             }, 0);
 
             data.price(data.initPrice + ingredientsPrice);
-            console.log(data.ingredients()[0].count());
+
             $('#ingredientModal').modal('hide');
         }
+
+
+        self.serchedIngredients = ko.dependentObservable(function() {
+            var search = self.searchIngredient().toLowerCase();
+            var pizzaIngr = self.allIngredientsForPizza();
+            console.log(!$.isEmptyObject(pizzaIngr));
+            if(!$.isEmptyObject(pizzaIngr)){
+                var ingredients = pizzaIngr.ingredients();
+                console.log(ingredients);
+                return ko.utils.arrayFilter(ingredients, function(ingredient) {
+                    return ingredient.name().toLowerCase().indexOf(search) >= 0;
+                });
+            }
+
+        }, self);
     }
+
+
 
     function init() {
         getPizzas().then(function (pizzas) {
