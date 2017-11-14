@@ -25,3 +25,7 @@
 #paymentView .title h1{
     width: auto;
 }
+
+#paymentView input, #paymentView select, #paymentView textarea {
+    max-width: 100%;
+}
