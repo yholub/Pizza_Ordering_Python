@@ -221,7 +221,7 @@ class MigrationHistory(Base):
     ProductVersion = Column(Unicode(32), nullable=False)
 
 url = 'mssql+pyodbc://(localdb)\\v11.0/Pizza_Ordering?driver=SQL+Server+Native+Client+11.0?trusted_connection=yes'
-print(url)
+
 engine = create_engine(url)
 engine.connect()
 

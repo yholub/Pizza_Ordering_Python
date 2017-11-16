@@ -20,11 +20,12 @@ $.sammy("#main", function () {
             $("#oHref").removeClass("navactive");
             self.render('settings.html').replace("#main").then(function() {
                 
-                function SettingsFormModel(settings, ings) {
+                function SettingsFormModel(settings, ingsString) {
+                    ings = JSON.parse(ingsString)
                     this.start = ko.observable(settings.Open);
                     this.end = ko.observable(settings.Close);
                     this.cap = ko.observable(settings.Capacity);
-
+                    this.PizzaHouseId = settings.Id;
                     var dict = {};
                     settings.InStock.forEach(function (el) {
                         dict[el.IngredientDto.Id] = el.Quantity;
@@ -43,18 +44,25 @@ $.sammy("#main", function () {
 
                     var self = this;
                     this.submit = function (data, event) {
-                       
-                        $.post("/api/settings", {
-                            StartHour: self.start(),
-                            EndHour: self.end(),
-                            Capacity: self.cap(),
-                            IngState: $.map(self.ing, function(el) {
-                                return {
-                                    Id: el.id,
-                                    Quantity: el.quantity()
-                                }
-                            })
-                        }).then(function() {
+                        $.ajax({
+                            url: "/api/settings",
+                            data: JSON.stringify( {
+                                StartHour: self.start(),
+                                EndHour: self.end(),
+                                Capacity: self.cap(),
+                                PizzaHouseId: self.PizzaHouseId,
+                                IngState: $.map(self.ing, function(el) {
+                                    return {
+                                        Id: el.id,
+                                        Quantity: el.quantity()
+                                    }
+                                })
+                            }),
+                            contentType: "application/json",
+                            type: "POST"
+
+                        })
+                        .then(function() {
                             $.notify({
                                 message: 'Налаштування оновлено',
                                 type: 'success'

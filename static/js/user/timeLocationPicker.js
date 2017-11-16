@@ -15,7 +15,14 @@
 
   
     function init(items) {
-        var locInfo = $.post("/api/pizza", items)
+        var locInfo =  $.ajax({
+            url: "/api/pizza",
+            data: JSON.stringify(items),
+            contentType: "application/json",
+            type: "POST"
+
+        });
+        
         var timeInfo = $.post("/api/order/gettime", items);
         $.when(locInfo, timeInfo)
             .then(function (locs, time) {
