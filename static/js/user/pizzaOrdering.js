@@ -126,6 +126,7 @@ var pizzaOrdering = (function ($) {
                 if (selectedPizza.ingredients().some(e => e.name() == ingredient.name())) {
                     ingredient.count(selectedPizza.ingredients().filter(x => x.name() == ingredient.name())[0].count());
                     ingredient.initCount = 1;
+                    ingredient.id = selectedPizza.ingredients().filter(x => x.name() == ingredient.name())[0].id;
                 }
                 else {
                     ingredient.count(0);
@@ -169,7 +170,7 @@ var pizzaOrdering = (function ($) {
                     data.ingredients().filter(x => x.name() == ingredient.name())[0].count(ingredient.count());
                 }
                 else if (ingredient.count() >= 1) {
-                    data.ingredients.push({ name: ko.observable(ingredient.name()), count: ko.observable(ingredient.count()) });
+                    data.ingredients.push({ name: ko.observable(ingredient.name()), count: ko.observable(ingredient.count()), id: ingredient.id  });
                 }
             });
 
