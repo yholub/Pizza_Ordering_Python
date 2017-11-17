@@ -2,6 +2,7 @@
 from flask import Flask, Blueprint, render_template, json, request, current_app, jsonify
 from models import *
 import sqlalchemy
+import datetime
 
 orders = Blueprint('orders', __name__)
 
@@ -62,7 +63,26 @@ def getPizzaHouses():
     db = current_app.config["db"]
     return jsonify(getAllPizzaHouses(db.session))
 
-
+@orders.route("/api/order/gettime", methods=['POST'])
+def getTime():
+    db = current_app.config["db"]
+    houses = getAllPizzaHouses(db.session)
+    res = {}
+    for house in houses:
+        hres = {
+            'PizzaHouseId': house["Id"],
+            'Time': {},
+            'Hours': {}
+        }
+        start_hour = max(house['Open'], datetime.datetime.now().time().hour + 1)
+        duration = (house['Close'] - start_hour + 24) % 24
+        for x in range(duration):
+            hres['Hours'][x + start_hour] = True
+            hres['Time'][x + start_hour] = {}
+            for y in range(60 // 5):
+                hres['Time'][x + start_hour][y * 5] = True
+        res[house["Id"]] = hres
+    return jsonify(res)
 
 @orders.route('/api/pizza', methods=['POST'])
 def getApropriatePizzaHouses():
@@ -86,6 +106,8 @@ def postSettings():
     db = current_app.config["db"]
     house = db.session.query(PizzaHouse).get(house_settings["PizzaHouseId"])
     house.Capacity = house_settings["Capacity"]
+    house.OpenTime = datetime.time(int(house_settings["StartHour"]))
+    house.CloseTime = datetime.time(int(house_settings["EndHour"]))
     ing_quantity_dict = {}
     for quantity in house_settings["IngState"]:
         item = db.session\
@@ -129,9 +151,16 @@ def rejectOrder(id):
 def GetSettingsModel(item):
     res = {
         'Id': item.Id,
-        'Close': 24,
-        'Open': 9,
-        'Capacity': item.Capacity
+        'Close': item.CloseTime.hour,
+        'Open': item.OpenTime.hour,
+        'Capacity': item.Capacity,
+        'Location': {
+            'Lat': item.Address.Lat,
+            'Lon': item.Address.Lng,
+            'City': item.Address.City,
+            'StreetName': item.Address.Street,
+            'HouseNumber': item.Address.HouseNumber
+        }
     }
     return res
 
