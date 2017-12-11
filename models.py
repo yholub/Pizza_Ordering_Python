@@ -227,5 +227,31 @@ engine.connect()
 
 Session = sessionmaker(bind=engine)
 session = Session()
+
+modUser = session.query(User).filter(User.Email == "modPython@g").first()
+if modUser is None:
+    modUser = User()
+    modUser.Name = "modPython"
+    modUser.UserName = "modPython"
+    modUser.PasswordHash = "123456"
+    modUser.Email="modPython@g"
+    modUser.EmailConfirmed = True
+    modUser.PhoneNumberConfirmed = True
+    modUser.SecurityStamp = "security"
+    modUser.TwoFactorEnabled = False
+    modUser.LockoutEnabled = False
+    modUser.AccessFailedCount = 0
+    session.add(modUser)
+    session.commit()
+
+modRole = session.query(UserRole).filter(UserRole.UserId == modUser.Id).first()
+if modRole is None:
+    moderatorRole = session.query(Role).filter(Role.Name == "Moderator").first()
+    modRole = UserRole()
+    modRole.RoleId = moderatorRole.Id
+    modRole.UserId = modUser.Id
+    session.add(modRole)
+    session.commit()
+
 def getSession() :
     return Session()

@@ -26,13 +26,42 @@ def showSignUp():
 @app.route('/api/Account/Login',methods=['POST'])
 def login():
     model = request.form
-    if(model['userName'][0:3] == 'bad') :
+    logUser = db.session.query(User)\
+                .filter(sqlalchemy.and_(User.Email == model['userName'], User.PasswordHash == model['password']))\
+                .first()
+    if logUser is None:
         return "bad request", 400
-    if(model['userName'][0:3] == 'mod') :
+    roles = db.session.query(UserRole, Role)\
+                .filter(logUser.Id == UserRole.UserId)\
+                .filter(Role.Id == UserRole.RoleId)\
+                .first() 
+        
+    if(roles is not None and roles[1].Name == 'Moderator') :
         return jsonify({
             'status' : "success",
             'redirect_url' : "views/moderator/ModeratorLayout.html#/" 
         })
+    
+    return jsonify({
+            'status' : "success"
+        })
+
+@app.route('/api/Account/Register',methods=['POST'])
+def register():
+    model = request.form
+    modUser = User()
+    modUser.Name = model["name"]
+    modUser.UserName = model["name"]
+    modUser.PasswordHash = model["password"]
+    modUser.Email = model["email"]
+    modUser.EmailConfirmed = True
+    modUser.PhoneNumberConfirmed = True
+    modUser.SecurityStamp = "security"
+    modUser.TwoFactorEnabled = False
+    modUser.LockoutEnabled = False
+    modUser.AccessFailedCount = 0
+    db.session.add(modUser)
+    db.session.commit()
     
     return jsonify({
             'status' : "success"
