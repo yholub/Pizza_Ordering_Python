@@ -99,6 +99,7 @@
                 time: self.selectedHouse().time(),
                 items: self.items
             };
+            location.href = "#/payment";
         }
         
         function timeChanged(time) {
