@@ -143,9 +143,9 @@ def acceptOrder(id):
 @orders.route('/api/order/reject/<id>',  methods=['POST'])
 def rejectOrder(id):
     db = current_app.config["db"]
-    order = session.query(Order).filter(Order.Id == id).first()
+    order = db.session.query(Order).filter(Order.Id == id).first()
     order.Status = 4
-    session.commit()
+    db.session.commit()
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 def GetSettingsModel(item):
