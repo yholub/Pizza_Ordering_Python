@@ -60,7 +60,7 @@ var pizzaOrdering = (function ($) {
         self.searchIngredient = ko.observable('');
 
         self.order = function () {
-            window.cacheOrders = { orderItems: $.map(self.selectedProducts(), function (el) { return { id: el.id, name: el.name, count: el.countOfPizzas(), ingredients: $.map(el.ingredients(), function (ing) { return { id: ing.id, count: ing.count() } }) } }) };
+            window.cacheOrders = { orderItems: $.map(self.selectedProducts(), function (el) { return { id: el.id, name: el.name, count: el.countOfPizzas(), ingredients: $.map(el.ingredients(), function (ing) { return { id: ing.id, count: Number(ing.count()) } }) } }) };
             console.log(window.cacheOrders);
             location.href = "#/time";
         }
