@@ -33,9 +33,11 @@ class BasicTests(unittest.TestCase):
 	    self.assertEqual(response.status_code, 200)
 
     def test_pizza_ordering(self):
-
-	    response = self.app.get('/api/ingredients', follow_redirects=True)
-	    self.assertEqual(response.status_code, 200)
+        response = self.app.get('/api/ingredients', follow_redirects=True)
+        data = json.loads(response.data.decode("utf-8"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['Name'], "Сир")
 
 
 suite = unittest.TestLoader().loadTestsFromTestCase(BasicTests)
